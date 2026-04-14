@@ -1,0 +1,298 @@
+:root {
+  font-family:
+    'IBM Plex Sans', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #f5f1e8;
+  background:
+    radial-gradient(circle at top left, rgba(255, 166, 0, 0.22), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(72, 182, 214, 0.2), transparent 28%),
+    linear-gradient(160deg, #101318 0%, #171d25 48%, #0d1117 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --bs-body-bg: transparent;
+  --bs-body-color: #f5f1e8;
+  --bs-border-color: rgba(255, 255, 255, 0.1);
+  --bs-primary: #f7b733;
+  --bs-primary-rgb: 247, 183, 51;
+  --bs-secondary-color: rgba(245, 241, 232, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.auth-panel,
+.panel-card,
+.hero-panel {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(12, 16, 22, 0.72);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+}
+
+.auth-panel {
+  overflow: hidden;
+}
+
+.auth-aside {
+  padding: 2rem;
+  background:
+    linear-gradient(180deg, rgba(247, 183, 51, 0.2), transparent),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+}
+
+.eyebrow {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: #f7b733;
+}
+
+.display-title {
+  font-family:
+    'Space Grotesk', 'IBM Plex Sans', sans-serif;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+  font-weight: 700;
+}
+
+.hero-copy {
+  max-width: 42rem;
+  color: rgba(245, 241, 232, 0.75);
+  font-size: 1.05rem;
+}
+
+.glass-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.glass-list-item,
+.hero-metric,
+.config-card,
+.device-list-item,
+.empty-state {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+}
+
+.glass-list-item {
+  padding: 1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.glass-list-item span {
+  color: rgba(245, 241, 232, 0.7);
+}
+
+.topbar {
+  background: rgba(8, 10, 14, 0.55);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.brand {
+  font-family:
+    'Space Grotesk', 'IBM Plex Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav-pill {
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.nav-pill:hover,
+.nav-pill-active {
+  background: rgba(247, 183, 51, 0.16);
+  transform: translateY(-1px);
+}
+
+.user-badge {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #101318;
+  background: linear-gradient(135deg, #f7b733, #fc4a1a);
+}
+
+.hero-panel,
+.panel-card {
+  padding: 1.5rem;
+}
+
+.hero-metric {
+  padding: 1.25rem;
+  text-align: right;
+}
+
+.hero-metric-label,
+.panel-subtitle,
+.device-list-item small,
+.config-output {
+  color: rgba(245, 241, 232, 0.68);
+}
+
+.hero-metric strong {
+  display: block;
+  font-size: 1.75rem;
+  font-family:
+    'Space Grotesk', 'IBM Plex Sans', sans-serif;
+}
+
+.panel-title {
+  font-size: 1.3rem;
+}
+
+.device-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.device-list-item {
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.device-list-item span {
+  display: grid;
+}
+
+.device-list-item-active {
+  border-color: rgba(247, 183, 51, 0.45);
+  background: rgba(247, 183, 51, 0.12);
+}
+
+.device-chevron {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f7b733;
+}
+
+.config-card {
+  padding: 1.25rem;
+}
+
+.config-output {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(6, 8, 12, 0.8);
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-state-badge {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  margin-bottom: 0.85rem;
+  background: rgba(247, 183, 51, 0.15);
+  color: #f7b733;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+}
+
+.loader-wrap {
+  min-height: 12rem;
+  display: grid;
+  gap: 1rem;
+  place-content: center;
+  justify-items: center;
+}
+
+.loader-wrap-full {
+  min-height: 100vh;
+}
+
+.form-control,
+.form-select {
+  min-height: 3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f5f1e8;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: rgba(255, 255, 255, 0.07);
+  color: #f5f1e8;
+  border-color: rgba(247, 183, 51, 0.7);
+  box-shadow: 0 0 0 0.2rem rgba(247, 183, 51, 0.16);
+}
+
+.form-control::placeholder {
+  color: rgba(245, 241, 232, 0.35);
+}
+
+.btn-primary {
+  color: #171d25;
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .auth-aside {
+    padding-bottom: 0;
+  }
+
+  .hero-metric {
+    text-align: left;
+  }
+}
