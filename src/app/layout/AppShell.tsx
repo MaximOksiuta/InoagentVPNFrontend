@@ -15,7 +15,10 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
     const initials = useMemo(() => {
         if (!user) return 'NA'
 
-        return user.phone.slice(-2).toUpperCase()
+        const trimmed = user.nickname.trim()
+        if (!trimmed) return user.phone.slice(-2).toUpperCase()
+
+        return trimmed.slice(0, 2).toUpperCase()
     }, [user])
 
     return (
@@ -56,14 +59,19 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                             <div className="user-badge">
                                 <span>{initials}</span>
                             </div>
-                                <div>
-                                    <div className="fw-semibold">{user?.phone}</div>
-                                    {user?.isAdmin ? (
-                                    <div className="small text-secondary">
-                                        {user?.isAdmin ? 'Администратор' : 'Пользователь'}
-                                    </div>
-                                    ) : null}
+                            <div>
+                                <div className="fw-semibold">{user?.nickname}</div>
+                                <div className="small text-secondary">
+                                    {user?.phone}
                                 </div>
+                                {user?.isAdmin ?
+                                    (
+                                        <div className="small text-secondary">
+                                            'Администратор'
+                                        </div>
+                                    ) : null
+                                }
+                            </div>
 
                             <button
                                 type="button"
@@ -93,8 +101,11 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                             </div>
                             <div className="col-lg-4">
                                 <div className="hero-metric">
-                                    <span className="hero-metric-label">Роль доступа</span>
-                                    <strong>{user?.isAdmin ? 'admin' : 'user'}</strong>
+                                    <span className="hero-metric-label">Пользователь</span>
+                                    <strong>{user?.nickname}</strong>
+                                    <div className="small text-secondary mt-2">
+                                        {user?.isAdmin ? 'admin' : 'user'}
+                                    </div>
                                 </div>
                             </div>
                         </div>

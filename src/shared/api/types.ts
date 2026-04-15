@@ -1,10 +1,12 @@
 export type RegisterRequest = {
+  nickname: string
   phone: string
   password: string
 }
 
 export type RegisterResponse = {
   id: number
+  nickname: string
   phone: string
   telegramId?: number | null
 }
@@ -23,6 +25,7 @@ export type AuthTokenResponse = {
 export type CurrentUserResponse = {
   id: number
   isAdmin: boolean
+  nickname: string
   phone: string
   telegramId?: number | null
 }

@@ -7,12 +7,14 @@ import { ApiError } from '../../shared/api/http'
 type AuthMode = 'login' | 'register'
 
 type AuthFormState = {
+  nickname: string
   phone: string
   password: string
   confirmPassword: string
 }
 
 const initialState: AuthFormState = {
+  nickname: '',
   phone: '',
   password: '',
   confirmPassword: '',
@@ -35,6 +37,11 @@ export function AuthPage() {
       return
     }
 
+    if (mode === 'register' && !form.nickname.trim()) {
+      setError('Укажите никнейм.')
+      return
+    }
+
     if (mode === 'register' && form.password !== form.confirmPassword) {
       setError('Пароли не совпадают.')
       return
@@ -50,6 +57,7 @@ export function AuthPage() {
         })
       } else {
         await register({
+          nickname: form.nickname.trim(),
           phone: form.phone.trim(),
           password: form.password,
         })
@@ -100,6 +108,24 @@ export function AuthPage() {
                   </div>
 
                   <form onSubmit={handleSubmit} className="vstack gap-3">
+                    {mode === 'register' ? (
+                      <div>
+                        <label htmlFor="nickname" className="form-label">
+                          Никнейм
+                        </label>
+                        <input
+                          id="nickname"
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Екатерина Мизулина"
+                          value={form.nickname}
+                          onChange={(event) =>
+                            setForm((current) => ({ ...current, nickname: event.target.value }))
+                          }
+                        />
+                      </div>
+                    ) : null}
+
                     <div>
                       <label htmlFor="phone" className="form-label">
                         Номер телефона
@@ -124,7 +150,7 @@ export function AuthPage() {
                         id="password"
                         type="password"
                         className="form-control form-control-lg"
-                        placeholder="Введите пароль"
+                        placeholder="qwerty123"
                         value={form.password}
                         onChange={(event) =>
                           setForm((current) => ({ ...current, password: event.target.value }))
@@ -141,7 +167,7 @@ export function AuthPage() {
                           id="confirmPassword"
                           type="password"
                           className="form-control form-control-lg"
-                          placeholder="Повторите пароль"
+                          placeholder="qwerty123"
                           value={form.confirmPassword}
                           onChange={(event) =>
                             setForm((current) => ({
