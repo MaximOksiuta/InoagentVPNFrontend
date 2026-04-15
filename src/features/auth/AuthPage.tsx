@@ -69,25 +69,10 @@ export function AuthPage() {
         <div className="row justify-content-center">
           <div className="col-xl-10">
             <div className="auth-panel shadow-lg">
-              <div className="row g-0">
-                <div className="col-lg-5 auth-aside">
-                  <div className="eyebrow mb-3">vpn-auto control</div>
-                  <h1 className="display-title mb-3">Личный кабинет для VPN-инфраструктуры</h1>
-                  <p className="hero-copy mb-4">
-                    Фронтенд построен вокруг контракта: телефонная авторизация, управление
-                    девайсами и отдельный административный контур для серверов.
-                  </p>
-
-                  <div className="glass-list">
-                    <div className="glass-list-item">
-                      <strong>Пользователь</strong>
-                      <span>создает устройство, выбирает сервер и получает конфиг</span>
-                    </div>
-                    <div className="glass-list-item">
-                      <strong>Администратор</strong>
-                      <span>поддерживает каталог серверов и их технические параметры</span>
-                    </div>
-                  </div>
+              <div className="column g-0">
+                <div className="auth-aside">
+                  <div className="eyebrow mb-3">vpn control panel</div>
+                  <h1 className="display-title mb-3">InoagentVPN</h1>
                 </div>
 
                 <div className="col-lg-7 p-4 p-lg-5">
