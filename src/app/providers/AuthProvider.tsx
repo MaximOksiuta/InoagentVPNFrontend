@@ -61,11 +61,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   async function register(payload: RegisterRequest) {
     await authApi.register(payload)
-    const response = await authApi.login({
-      phone: payload.phone,
-      password: payload.password,
-    })
-    await handleAuth(response)
   }
 
   function logout() {

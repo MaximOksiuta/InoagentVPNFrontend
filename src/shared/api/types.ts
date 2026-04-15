@@ -30,6 +30,16 @@ export type CurrentUserResponse = {
   telegramId?: number | null
 }
 
+export type AdminUserResponse = {
+  id: number
+  isAdmin: boolean
+  isApproved: boolean
+  isBanned: boolean
+  nickname: string
+  phone: string
+  telegramId?: number | null
+}
+
 export type DeviceResponse = {
   id: number
   name: string

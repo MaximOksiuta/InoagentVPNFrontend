@@ -588,6 +588,73 @@
         },
         "deprecated": false
       }
+    },
+    "/api/users": {
+      "get": {
+        "tags": [],
+        "description": "List users, available only to administrators",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Users list",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/org.example.AdminUserResponse"
+                  },
+                  "title": "List<AdminUserResponse>"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/users/{userId}/approve": {
+      "post": {
+        "tags": [],
+        "description": "Approve one user, available only to administrators",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Approved user",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.AdminUserResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/users/{userId}/ban": {
+      "post": {
+        "tags": [],
+        "description": "Ban one user, available only to administrators",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Banned user",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.AdminUserResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
     }
   },
   "components": {
@@ -1036,6 +1103,53 @@
           "username"
         ],
         "title": "ServerResponse"
+      },
+      "org.example.AdminUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
+          },
+          "isAdmin": {
+            "type": "boolean",
+            "title": "Boolean"
+          },
+          "isApproved": {
+            "type": "boolean",
+            "title": "Boolean"
+          },
+          "isBanned": {
+            "type": "boolean",
+            "title": "Boolean"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "String"
+          },
+          "phone": {
+            "type": "string",
+            "title": "String"
+          },
+          "telegramId": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "format": "int64",
+            "title": "Long"
+          }
+        },
+        "required": [
+          "id",
+          "isAdmin",
+          "isApproved",
+          "isBanned",
+          "nickname",
+          "phone"
+        ],
+        "title": "AdminUserResponse"
       }
     },
     "examples": {},

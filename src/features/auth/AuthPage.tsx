@@ -26,11 +26,13 @@ export function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login')
   const [form, setForm] = useState<AuthFormState>(initialState)
   const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError(null)
+    setSuccessMessage(null)
 
     if (!form.phone.trim() || !form.password.trim()) {
       setError('Укажите номер телефона и пароль.')
@@ -55,15 +57,21 @@ export function AuthPage() {
           phone: form.phone.trim(),
           password: form.password,
         })
+        navigate('/devices', { replace: true })
       } else {
         await register({
           nickname: form.nickname.trim(),
           phone: form.phone.trim(),
           password: form.password,
         })
-      }
 
-      navigate('/devices', { replace: true })
+        setMode('login')
+        setForm((current) => ({
+          ...initialState,
+          phone: current.phone,
+        }))
+        setSuccessMessage('Аккаунт создан. Вход станет доступен после подтверждения администратором.')
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Не удалось выполнить запрос.')
     } finally {
@@ -91,6 +99,7 @@ export function AuthPage() {
                       onClick={() => {
                         setMode('login')
                         setError(null)
+                        setSuccessMessage(null)
                       }}
                     >
                       Вход
@@ -101,6 +110,7 @@ export function AuthPage() {
                       onClick={() => {
                         setMode('register')
                         setError(null)
+                        setSuccessMessage(null)
                       }}
                     >
                       Регистрация
@@ -179,6 +189,7 @@ export function AuthPage() {
                       </div>
                     ) : null}
 
+                    {successMessage ? <div className="alert alert-success mb-0">{successMessage}</div> : null}
                     {error ? <div className="alert alert-danger mb-0">{error}</div> : null}
 
                     <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>

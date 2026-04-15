@@ -67,7 +67,7 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                                 {user?.isAdmin ?
                                     (
                                         <div className="small text-secondary">
-                                            'Администратор'
+                                            Администратор
                                         </div>
                                     ) : null
                                 }
