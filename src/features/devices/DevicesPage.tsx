@@ -8,6 +8,7 @@ import type {
     CreateDeviceRequest,
     DeviceDetailsResponse,
     DeviceResponse,
+    DeviceServerResponse,
     ServerListItemResponse,
 } from '../../shared/api/types'
 import {EmptyState} from '../../shared/ui/EmptyState'
@@ -19,6 +20,11 @@ export function DevicesPage() {
     const [servers, setServers] = useState<ServerListItemResponse[]>([])
     const [selectedDevice, setSelectedDevice] = useState<DeviceDetailsResponse | null>(null)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [expandedConfigIds, setExpandedConfigIds] = useState<number[]>([])
+    const [qrConfig, setQrConfig] = useState<DeviceServerResponse | null>(null)
+    const [qrImageUrl, setQrImageUrl] = useState<string | null>(null)
+    const [isQrLoading, setIsQrLoading] = useState(false)
+    const [activeDownloadId, setActiveDownloadId] = useState<number | null>(null)
     const [newDeviceName, setNewDeviceName] = useState('')
     const [editedName, setEditedName] = useState('')
     const [selectedServerId, setSelectedServerId] = useState<number | ''>('')
@@ -26,6 +32,17 @@ export function DevicesPage() {
     const [isBootstrapping, setIsBootstrapping] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
     const [isGenerating, setIsGenerating] = useState(false)
+
+    function formatConfigFilename(region: string, deviceName: string) {
+        const normalize = (value: string) =>
+            value
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '_')
+                .replace(/[^a-z0-9_-]+/g, '')
+
+        return `${normalize(region)}_${normalize(deviceName)}.conf`
+    }
 
     const openDevice = useCallback(async (
         deviceId: number,
@@ -37,6 +54,12 @@ export function DevicesPage() {
             setSelectedDevice(details)
             setEditedName(details.name)
             setSelectedServerId(availableServers[0]?.id ?? '')
+            setExpandedConfigIds([])
+            setQrConfig(null)
+            setQrImageUrl((current) => {
+                if (current) URL.revokeObjectURL(current)
+                return null
+            })
         } catch (err) {
             setError(err instanceof ApiError ? err.message : 'Не удалось открыть устройство.')
         }
@@ -178,6 +201,65 @@ export function DevicesPage() {
         }
     }
 
+    function toggleConfig(configId: number) {
+        setExpandedConfigIds((current) =>
+            current.includes(configId)
+                ? current.filter((id) => id !== configId)
+                : [...current, configId],
+        )
+    }
+
+    async function handleDownloadConfig(config: DeviceServerResponse) {
+        if (!token || !selectedDevice) return
+
+        setActiveDownloadId(config.id)
+        setError(null)
+
+        try {
+            const response = await devicesApi.downloadConfigFile(token, selectedDevice.id, config.id)
+            const url = URL.createObjectURL(response.blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = formatConfigFilename(config.serverLocation, selectedDevice.name)
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+            URL.revokeObjectURL(url)
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : 'Не удалось скачать файл конфигурации.')
+        } finally {
+            setActiveDownloadId(null)
+        }
+    }
+
+    async function handleOpenQr(config: DeviceServerResponse) {
+        if (!token || !selectedDevice) return
+
+        setIsQrLoading(true)
+        setError(null)
+
+        try {
+            const response = await devicesApi.getConfigQr(token, selectedDevice.id, config.id)
+            setQrConfig(config)
+            setQrImageUrl((current) => {
+                if (current) URL.revokeObjectURL(current)
+                return URL.createObjectURL(response.blob)
+            })
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : 'Не удалось получить QR-код.')
+        } finally {
+            setIsQrLoading(false)
+        }
+    }
+
+    function closeQrModal() {
+        setQrConfig(null)
+        setQrImageUrl((current) => {
+            if (current) URL.revokeObjectURL(current)
+            return null
+        })
+    }
+
     if (isBootstrapping) {
         return <LoaderBlock label="Загружаем устройства и серверы"/>
     }
@@ -301,9 +383,6 @@ export function DevicesPage() {
                                 <div className="d-flex justify-content-between align-items-center mb-4">
                                     <div>
                                         <h2 className="panel-title mb-1">Сохраненные конфиги</h2>
-                                        <p className="panel-subtitle mb-0">
-                                            Ответы из `/api/devices/{'{deviceId}'}/configs/generate`
-                                        </p>
                                     </div>
                                     <span className="badge text-bg-light">{selectedDevice.configs.length}</span>
                                 </div>
@@ -327,7 +406,36 @@ export function DevicesPage() {
                                                     </div>
                                                     <span className="badge rounded-pill text-bg-dark align-self-start">config #{config.id}</span>
                                                 </div>
-                                                <pre className="config-output mb-0">{config.config}</pre>
+
+                                                <div className="config-actions">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-outline-light btn-sm"
+                                                        onClick={() => void handleOpenQr(config)}
+                                                        disabled={isQrLoading}
+                                                    >
+                                                        {isQrLoading && qrConfig?.id === config.id ? 'Загружаем QR...' : 'Открыть QR'}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-outline-light btn-sm"
+                                                        onClick={() => void handleDownloadConfig(config)}
+                                                        disabled={activeDownloadId === config.id}
+                                                    >
+                                                        {activeDownloadId === config.id ? 'Скачиваем...' : 'Скачать файл'}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-outline-light btn-sm"
+                                                        onClick={() => toggleConfig(config.id)}
+                                                    >
+                                                        {expandedConfigIds.includes(config.id) ? 'Свернуть текст' : 'Показать текст'}
+                                                    </button>
+                                                </div>
+
+                                                {expandedConfigIds.includes(config.id) ? (
+                                                    <pre className="config-output mb-0 mt-3">{config.config}</pre>
+                                                ) : null}
                                             </article>
                                         ))}
                                     </div>
@@ -389,6 +497,46 @@ export function DevicesPage() {
                                         >
                                             {isSaving ? 'Удаляем...' : 'Да, удалить'}
                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
+
+                        {qrConfig && qrImageUrl ? (
+                            <div
+                                className="app-modal-backdrop"
+                                role="presentation"
+                                onClick={() => closeQrModal()}
+                            >
+                                <div
+                                    className="app-modal panel-card qr-modal"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="config-qr-modal-title"
+                                    onClick={(event) => event.stopPropagation()}
+                                >
+                                    <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
+                                        <div>
+                                            <p className="eyebrow mb-2">QR code</p>
+                                            <h2 id="config-qr-modal-title" className="panel-title mb-1">
+                                                {qrConfig.serverName}
+                                            </h2>
+                                            <p className="panel-subtitle mb-0">
+                                                {qrConfig.serverLocation} · config #{qrConfig.id}
+                                            </p>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-light btn-sm"
+                                            onClick={() => closeQrModal()}
+                                        >
+                                            Закрыть
+                                        </button>
+                                    </div>
+
+                                    <div className="qr-modal-image-wrap">
+                                        <img src={qrImageUrl} alt={`QR код для конфигурации ${qrConfig.id}`} className="qr-modal-image"/>
                                     </div>
                                 </div>
                             </div>

@@ -1,914 +1,1051 @@
 {
-  "openapi" : "3.1.0",
-  "info" : {
-    "title" : "Auth and Devices API",
-    "description" : "API for authentication and user device management",
-    "version" : "1.2.0"
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Auth and Devices API",
+    "description": "API for authentication and user device management",
+    "version": "1.2.0"
   },
-  "externalDocs" : {
-    "url" : "/"
+  "externalDocs": {
+    "url": "/"
   },
-  "servers" : [ ],
-  "tags" : [ ],
-  "paths" : {
-    "/health" : {
-      "get" : {
-        "tags" : [ ],
-        "description" : "Health check endpoint",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Service is available",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.HealthResponse"
+  "servers": [],
+  "tags": [],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [],
+        "description": "Health check endpoint",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Service is available",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.HealthResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/auth/register" : {
-      "post" : {
-        "tags" : [ ],
-        "description" : "Register a new user with phone, password and optional telegram id",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Registration payload",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.RegisterRequest"
+    "/api/auth/register": {
+      "post": {
+        "tags": [],
+        "description": "Register a new user with phone, password and optional telegram id",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.RegisterRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "201" : {
-            "description" : "User created successfully",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.RegisterResponse"
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.RegisterResponse"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Validation error",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "400": {
+            "description": "Validation error",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           },
-          "409" : {
-            "description" : "User with this phone already exists",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "409": {
+            "description": "User with this phone already exists",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/auth/login" : {
-      "post" : {
-        "tags" : [ ],
-        "description" : "Login with phone and password to get JWT token",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Login payload",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.LoginRequest"
+    "/api/auth/login": {
+      "post": {
+        "tags": [],
+        "description": "Login with phone and password to get JWT token",
+        "parameters": [],
+        "requestBody": {
+          "description": "Login payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.LoginRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "200" : {
-            "description" : "Login successful",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.AuthTokenResponse"
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.AuthTokenResponse"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Validation error",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "400": {
+            "description": "Validation error",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Invalid phone or password",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "401": {
+            "description": "Invalid phone or password",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/auth/me" : {
-      "get" : {
-        "tags" : [ ],
-        "description" : "Get current user by JWT token or super key headers",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Current authenticated user",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.CurrentUserResponse"
+    "/api/auth/me": {
+      "get": {
+        "tags": [],
+        "description": "Get current user by JWT token or super key headers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Current authenticated user",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.CurrentUserResponse"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Missing or invalid credentials",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "401": {
+            "description": "Missing or invalid credentials",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/devices" : {
-      "get" : {
-        "tags" : [ ],
-        "description" : "List devices of the current user",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "User devices",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/org.example.DeviceResponse"
+    "/api/devices": {
+      "get": {
+        "tags": [],
+        "description": "List devices of the current user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User devices",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/org.example.DeviceResponse"
                   },
-                  "title" : "List<DeviceResponse>"
+                  "title": "List<DeviceResponse>"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Missing or invalid credentials",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "401": {
+            "description": "Missing or invalid credentials",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       },
-      "post" : {
-        "tags" : [ ],
-        "description" : "Create a new device for the current user",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Device payload",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.CreateDeviceRequest"
+      "post": {
+        "tags": [],
+        "description": "Create a new device for the current user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Device payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.CreateDeviceRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "201" : {
-            "description" : "Device created",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.DeviceResponse"
+        "responses": {
+          "201": {
+            "description": "Device created",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.DeviceResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/devices/{deviceId}" : {
-      "get" : {
-        "tags" : [ ],
-        "description" : "Get one device of the current user",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Requested device",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.DeviceDetailsResponse"
+    "/api/devices/{deviceId}": {
+      "get": {
+        "tags": [],
+        "description": "Get one device of the current user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Requested device",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.DeviceDetailsResponse"
                 }
               }
             }
           },
-          "404" : {
-            "description" : "Device not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Device not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       },
-      "put" : {
-        "tags" : [ ],
-        "description" : "Update one device of the current user",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Updated device payload",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.UpdateDeviceRequest"
+      "put": {
+        "tags": [],
+        "description": "Update one device of the current user",
+        "parameters": [],
+        "requestBody": {
+          "description": "Updated device payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.UpdateDeviceRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "200" : {
-            "description" : "Updated device",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.DeviceDetailsResponse"
+        "responses": {
+          "200": {
+            "description": "Updated device",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.DeviceDetailsResponse"
                 }
               }
             }
           },
-          "404" : {
-            "description" : "Device not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Device not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       },
-      "delete" : {
-        "tags" : [ ],
-        "description" : "Delete one device of the current user",
-        "parameters" : [ ],
-        "responses" : {
-          "204" : {
-            "description" : "Device deleted",
-            "headers" : { }
+      "delete": {
+        "tags": [],
+        "description": "Delete one device of the current user",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Device deleted",
+            "headers": {}
           },
-          "404" : {
-            "description" : "Device not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Device not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/devices/{deviceId}/configs/generate" : {
-      "post" : {
-        "tags" : [ ],
-        "description" : "Generate and save config for the current user's device on a selected server",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Server selection for config generation",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.GenerateDeviceConfigRequest"
+    "/api/devices/{deviceId}/configs/generate": {
+      "post": {
+        "tags": [],
+        "description": "Generate and save config for the current user's device on a selected server",
+        "parameters": [],
+        "requestBody": {
+          "description": "Server selection for config generation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.GenerateDeviceConfigRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "200" : {
-            "description" : "Generated and saved config",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.DeviceServerResponse"
+        "responses": {
+          "200": {
+            "description": "Generated and saved config",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.DeviceServerResponse"
                 }
               }
             }
           },
-          "404" : {
-            "description" : "Device or server not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Device or server not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/servers" : {
-      "get" : {
-        "tags" : [ ],
-        "description" : "List servers for authenticated users",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Server list",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/org.example.ServerListItemResponse"
+    "/api/devices/{deviceId}/configs/{configId}/file": {
+      "get": {
+        "tags": [],
+        "description": "Download one saved config file for the current user's device",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Config file content",
+            "headers": {}
+          },
+          "404": {
+            "description": "Device or config not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/devices/{deviceId}/configs/{configId}/qr": {
+      "get": {
+        "tags": [],
+        "description": "Get QR code PNG for one saved config of the current user's device",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "QR code PNG",
+            "headers": {}
+          },
+          "404": {
+            "description": "Device or config not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/servers": {
+      "get": {
+        "tags": [],
+        "description": "List servers for authenticated users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Server list",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/org.example.ServerListItemResponse"
                   },
-                  "title" : "List<ServerListItemResponse>"
+                  "title": "List<ServerListItemResponse>"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Missing or invalid credentials",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "401": {
+            "description": "Missing or invalid credentials",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       },
-      "post" : {
-        "tags" : [ ],
-        "description" : "Create a server, available only to administrators",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Server payload",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.UpsertServerRequest"
+      "post": {
+        "tags": [],
+        "description": "Create a server, available only to administrators",
+        "parameters": [],
+        "requestBody": {
+          "description": "Server payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.UpsertServerRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "201" : {
-            "description" : "Server created",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ServerResponse"
+        "responses": {
+          "201": {
+            "description": "Server created",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ServerResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     },
-    "/api/servers/{serverId}" : {
-      "get" : {
-        "tags" : [ ],
-        "description" : "Get one server, available only to administrators",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Requested server",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ServerResponse"
+    "/api/servers/{serverId}": {
+      "get": {
+        "tags": [],
+        "description": "Get one server, available only to administrators",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Requested server",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ServerResponse"
                 }
               }
             }
           },
-          "404" : {
-            "description" : "Server not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Server not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       },
-      "put" : {
-        "tags" : [ ],
-        "description" : "Update one server, available only to administrators",
-        "parameters" : [ ],
-        "requestBody" : {
-          "description" : "Updated server payload",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/org.example.UpsertServerRequest"
+      "put": {
+        "tags": [],
+        "description": "Update one server, available only to administrators",
+        "parameters": [],
+        "requestBody": {
+          "description": "Updated server payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/org.example.UpsertServerRequest"
               }
             }
           },
-          "required" : true
+          "required": true
         },
-        "responses" : {
-          "200" : {
-            "description" : "Updated server",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ServerResponse"
+        "responses": {
+          "200": {
+            "description": "Updated server",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ServerResponse"
                 }
               }
             }
           },
-          "404" : {
-            "description" : "Server not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Server not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       },
-      "delete" : {
-        "tags" : [ ],
-        "description" : "Delete one server, available only to administrators",
-        "parameters" : [ ],
-        "responses" : {
-          "204" : {
-            "description" : "Server deleted",
-            "headers" : { }
+      "delete": {
+        "tags": [],
+        "description": "Delete one server, available only to administrators",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Server deleted",
+            "headers": {}
           },
-          "404" : {
-            "description" : "Server not found",
-            "headers" : { },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/org.example.ErrorResponse"
+          "404": {
+            "description": "Server not found",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/org.example.ErrorResponse"
                 }
               }
             }
           }
         },
-        "deprecated" : false
+        "deprecated": false
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "org.example.HealthResponse" : {
-        "type" : "object",
-        "properties" : {
-          "status" : {
-            "type" : "string",
-            "title" : "String"
+  "components": {
+    "schemas": {
+      "org.example.HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "status" ],
-        "title" : "HealthResponse"
+        "required": [
+          "status"
+        ],
+        "title": "HealthResponse"
       },
-      "org.example.RegisterRequest" : {
-        "type" : "object",
-        "properties" : {
-          "nickname" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "title": "String"
           },
-          "password" : {
-            "type" : "string",
-            "title" : "String"
+          "password": {
+            "type": "string",
+            "title": "String"
           },
-          "phone" : {
-            "type" : "string",
-            "title" : "String"
+          "phone": {
+            "type": "string",
+            "title": "String"
           },
-          "telegramId" : {
-            "type" : [ "null", "integer" ],
-            "format" : "int64",
-            "title" : "Long"
+          "telegramId": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "format": "int64",
+            "title": "Long"
           }
         },
-        "required" : [ "nickname", "password", "phone" ],
-        "title" : "RegisterRequest"
+        "required": [
+          "nickname",
+          "password",
+          "phone"
+        ],
+        "title": "RegisterRequest"
       },
-      "org.example.RegisterResponse" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+      "org.example.RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "nickname" : {
-            "type" : "string",
-            "title" : "String"
+          "nickname": {
+            "type": "string",
+            "title": "String"
           },
-          "phone" : {
-            "type" : "string",
-            "title" : "String"
+          "phone": {
+            "type": "string",
+            "title": "String"
           },
-          "telegramId" : {
-            "type" : [ "null", "integer" ],
-            "format" : "int64",
-            "title" : "Long"
+          "telegramId": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "format": "int64",
+            "title": "Long"
           }
         },
-        "required" : [ "id", "nickname", "phone" ],
-        "title" : "RegisterResponse"
+        "required": [
+          "id",
+          "nickname",
+          "phone"
+        ],
+        "title": "RegisterResponse"
       },
-      "org.example.ErrorResponse" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "message" ],
-        "title" : "ErrorResponse"
+        "required": [
+          "message"
+        ],
+        "title": "ErrorResponse"
       },
-      "org.example.LoginRequest" : {
-        "type" : "object",
-        "properties" : {
-          "password" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.LoginRequest": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "String"
           },
-          "phone" : {
-            "type" : "string",
-            "title" : "String"
+          "phone": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "password", "phone" ],
-        "title" : "LoginRequest"
+        "required": [
+          "password",
+          "phone"
+        ],
+        "title": "LoginRequest"
       },
-      "org.example.AuthTokenResponse" : {
-        "type" : "object",
-        "properties" : {
-          "accessToken" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.AuthTokenResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "title": "String"
           },
-          "expiresIn" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+          "expiresIn": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "tokenType" : {
-            "type" : "string",
-            "title" : "String"
+          "tokenType": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "accessToken", "expiresIn", "tokenType" ],
-        "title" : "AuthTokenResponse"
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "tokenType"
+        ],
+        "title": "AuthTokenResponse"
       },
-      "org.example.CurrentUserResponse" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+      "org.example.CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "isAdmin" : {
-            "type" : "boolean",
-            "title" : "Boolean"
+          "isAdmin": {
+            "type": "boolean",
+            "title": "Boolean"
           },
-          "nickname" : {
-            "type" : "string",
-            "title" : "String"
+          "nickname": {
+            "type": "string",
+            "title": "String"
           },
-          "phone" : {
-            "type" : "string",
-            "title" : "String"
+          "phone": {
+            "type": "string",
+            "title": "String"
           },
-          "telegramId" : {
-            "type" : [ "null", "integer" ],
-            "format" : "int64",
-            "title" : "Long"
+          "telegramId": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "format": "int64",
+            "title": "Long"
           }
         },
-        "required" : [ "id", "isAdmin", "nickname", "phone" ],
-        "title" : "CurrentUserResponse"
+        "required": [
+          "id",
+          "isAdmin",
+          "nickname",
+          "phone"
+        ],
+        "title": "CurrentUserResponse"
       },
-      "org.example.DeviceResponse" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+      "org.example.DeviceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+          "name": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "id", "name" ],
-        "title" : "DeviceResponse"
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "DeviceResponse"
       },
-      "org.example.CreateDeviceRequest" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.CreateDeviceRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "name" ],
-        "title" : "CreateDeviceRequest"
+        "required": [
+          "name"
+        ],
+        "title": "CreateDeviceRequest"
       },
-      "org.example.DeviceServerResponse" : {
-        "type" : "object",
-        "properties" : {
-          "config" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.DeviceServerResponse": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "type": "string",
+            "title": "String"
           },
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "serverId" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+          "serverId": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "serverLocation" : {
-            "type" : "string",
-            "title" : "String"
+          "serverLocation": {
+            "type": "string",
+            "title": "String"
           },
-          "serverName" : {
-            "type" : "string",
-            "title" : "String"
+          "serverName": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "config", "id", "serverId", "serverLocation", "serverName" ],
-        "title" : "DeviceServerResponse"
+        "required": [
+          "config",
+          "id",
+          "serverId",
+          "serverLocation",
+          "serverName"
+        ],
+        "title": "DeviceServerResponse"
       },
-      "org.example.DeviceDetailsResponse" : {
-        "type" : "object",
-        "properties" : {
-          "configs" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/org.example.DeviceServerResponse"
+      "org.example.DeviceDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "configs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/org.example.DeviceServerResponse"
             },
-            "title" : "List<DeviceServerResponse>"
+            "title": "List<DeviceServerResponse>"
           },
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+          "name": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "configs", "id", "name" ],
-        "title" : "DeviceDetailsResponse"
+        "required": [
+          "configs",
+          "id",
+          "name"
+        ],
+        "title": "DeviceDetailsResponse"
       },
-      "org.example.UpdateDeviceRequest" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.UpdateDeviceRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "name" ],
-        "title" : "UpdateDeviceRequest"
+        "required": [
+          "name"
+        ],
+        "title": "UpdateDeviceRequest"
       },
-      "org.example.GenerateDeviceConfigRequest" : {
-        "type" : "object",
-        "properties" : {
-          "serverId" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+      "org.example.GenerateDeviceConfigRequest": {
+        "type": "object",
+        "properties": {
+          "serverId": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           }
         },
-        "required" : [ "serverId" ],
-        "title" : "GenerateDeviceConfigRequest"
+        "required": [
+          "serverId"
+        ],
+        "title": "GenerateDeviceConfigRequest"
       },
-      "org.example.ServerListItemResponse" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+      "org.example.ServerListItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "location" : {
-            "type" : "string",
-            "title" : "String"
+          "location": {
+            "type": "string",
+            "title": "String"
           },
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+          "name": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "id", "location", "name" ],
-        "title" : "ServerListItemResponse"
+        "required": [
+          "id",
+          "location",
+          "name"
+        ],
+        "title": "ServerListItemResponse"
       },
-      "org.example.UpsertServerRequest" : {
-        "type" : "object",
-        "properties" : {
-          "containerConfigDir" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.UpsertServerRequest": {
+        "type": "object",
+        "properties": {
+          "containerConfigDir": {
+            "type": "string",
+            "title": "String"
           },
-          "containerName" : {
-            "type" : "string",
-            "title" : "String"
+          "containerName": {
+            "type": "string",
+            "title": "String"
           },
-          "host" : {
-            "type" : "string",
-            "title" : "String"
+          "host": {
+            "type": "string",
+            "title": "String"
           },
-          "interfaceName" : {
-            "type" : "string",
-            "title" : "String"
+          "interfaceName": {
+            "type": "string",
+            "title": "String"
           },
-          "location" : {
-            "type" : "string",
-            "title" : "String"
+          "location": {
+            "type": "string",
+            "title": "String"
           },
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+          "name": {
+            "type": "string",
+            "title": "String"
           },
-          "password" : {
-            "type" : [ "null", "string" ],
-            "title" : "String"
+          "password": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "title": "String"
           },
-          "port" : {
-            "type" : "integer",
-            "format" : "int32",
-            "title" : "Int"
+          "port": {
+            "type": "integer",
+            "format": "int32",
+            "title": "Int"
           },
-          "sshKeyPath" : {
-            "type" : [ "null", "string" ],
-            "title" : "String"
+          "sshKeyPath": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "title": "String"
           },
-          "username" : {
-            "type" : "string",
-            "title" : "String"
+          "username": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "containerConfigDir", "containerName", "host", "interfaceName", "location", "name", "port", "username" ],
-        "title" : "UpsertServerRequest"
+        "required": [
+          "containerConfigDir",
+          "containerName",
+          "host",
+          "interfaceName",
+          "location",
+          "name",
+          "port",
+          "username"
+        ],
+        "title": "UpsertServerRequest"
       },
-      "org.example.ServerResponse" : {
-        "type" : "object",
-        "properties" : {
-          "containerConfigDir" : {
-            "type" : "string",
-            "title" : "String"
+      "org.example.ServerResponse": {
+        "type": "object",
+        "properties": {
+          "containerConfigDir": {
+            "type": "string",
+            "title": "String"
           },
-          "containerName" : {
-            "type" : "string",
-            "title" : "String"
+          "containerName": {
+            "type": "string",
+            "title": "String"
           },
-          "host" : {
-            "type" : "string",
-            "title" : "String"
+          "host": {
+            "type": "string",
+            "title": "String"
           },
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "title" : "Long"
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "title": "Long"
           },
-          "interfaceName" : {
-            "type" : "string",
-            "title" : "String"
+          "interfaceName": {
+            "type": "string",
+            "title": "String"
           },
-          "location" : {
-            "type" : "string",
-            "title" : "String"
+          "location": {
+            "type": "string",
+            "title": "String"
           },
-          "name" : {
-            "type" : "string",
-            "title" : "String"
+          "name": {
+            "type": "string",
+            "title": "String"
           },
-          "password" : {
-            "type" : [ "null", "string" ],
-            "title" : "String"
+          "password": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "title": "String"
           },
-          "port" : {
-            "type" : "integer",
-            "format" : "int32",
-            "title" : "Int"
+          "port": {
+            "type": "integer",
+            "format": "int32",
+            "title": "Int"
           },
-          "sshKeyPath" : {
-            "type" : [ "null", "string" ],
-            "title" : "String"
+          "sshKeyPath": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "title": "String"
           },
-          "username" : {
-            "type" : "string",
-            "title" : "String"
+          "username": {
+            "type": "string",
+            "title": "String"
           }
         },
-        "required" : [ "containerConfigDir", "containerName", "host", "id", "interfaceName", "location", "name", "port", "username" ],
-        "title" : "ServerResponse"
+        "required": [
+          "containerConfigDir",
+          "containerName",
+          "host",
+          "id",
+          "interfaceName",
+          "location",
+          "name",
+          "port",
+          "username"
+        ],
+        "title": "ServerResponse"
       }
     },
-    "examples" : { },
-    "securitySchemes" : {
-      "bearerAuth" : {
-        "type" : "http",
-        "description" : "JWT access token in Authorization header",
-        "in" : "header",
-        "scheme" : "bearer",
-        "bearerFormat" : "JWT"
+    "examples": {},
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT access token in Authorization header",
+        "in": "header",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

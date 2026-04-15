@@ -6,6 +6,12 @@ type RequestOptions = {
   body?: unknown
 }
 
+export type BinaryResponse = {
+  blob: Blob
+  contentType: string | null
+  disposition: string | null
+}
+
 type ErrorResponse = {
   message?: string
 }
@@ -47,4 +53,32 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   }
 
   return (await response.json()) as T
+}
+
+export async function apiBinaryRequest(path: string, options: RequestOptions = {}): Promise<BinaryResponse> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: options.method ?? 'GET',
+    headers: {
+      ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
+    },
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  })
+
+  if (!response.ok) {
+    let payload: ErrorResponse | null = null
+
+    try {
+      payload = (await response.json()) as ErrorResponse
+    } catch {
+      payload = null
+    }
+
+    throw new ApiError(payload?.message ?? 'Ошибка запроса к API.', response.status)
+  }
+
+  return {
+    blob: await response.blob(),
+    contentType: response.headers.get('Content-Type'),
+    disposition: response.headers.get('Content-Disposition'),
+  }
 }

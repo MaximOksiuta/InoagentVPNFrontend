@@ -1,4 +1,4 @@
-import { apiRequest } from './http'
+import { apiBinaryRequest, apiRequest } from './http'
 import type {
   CreateDeviceRequest,
   DeviceDetailsResponse,
@@ -41,5 +41,11 @@ export const devicesApi = {
       token,
       body,
     })
+  },
+  downloadConfigFile(token: string, deviceId: number, configId: number) {
+    return apiBinaryRequest(`/api/devices/${deviceId}/configs/${configId}/file`, { token })
+  },
+  getConfigQr(token: string, deviceId: number, configId: number) {
+    return apiBinaryRequest(`/api/devices/${deviceId}/configs/${configId}/qr`, { token })
   },
 }
