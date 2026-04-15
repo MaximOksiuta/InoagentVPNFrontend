@@ -65,6 +65,19 @@ export type DeviceServerResponse = {
   serverName: string
 }
 
+export type AdminDeviceConfigResponse = {
+  config: string
+  deviceId: number
+  deviceName: string
+  id: number
+  serverId: number
+  serverLocation: string
+  serverName: string
+  userId: number
+  userNickname: string
+  userPhone: string
+}
+
 export type DeviceDetailsResponse = {
   configs: DeviceServerResponse[]
   id: number

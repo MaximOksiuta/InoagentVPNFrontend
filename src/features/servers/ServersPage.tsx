@@ -1,10 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAuth } from '../../app/providers/auth-context'
+import { configsApi } from '../../shared/api/configsApi'
 import { ApiError } from '../../shared/api/http'
 import { serversApi } from '../../shared/api/serversApi'
 import { usersApi } from '../../shared/api/usersApi'
-import type { AdminUserResponse, ServerResponse, UpsertServerRequest } from '../../shared/api/types'
+import type {
+  AdminDeviceConfigResponse,
+  AdminUserResponse,
+  ServerResponse,
+  UpsertServerRequest,
+} from '../../shared/api/types'
 import { EmptyState } from '../../shared/ui/EmptyState'
 import { LoaderBlock } from '../../shared/ui/LoaderBlock'
 
@@ -27,10 +33,12 @@ export function ServersPage() {
   const [selectedServerId, setSelectedServerId] = useState<number | null>(null)
   const [form, setForm] = useState<UpsertServerRequest>(emptyServerForm)
   const [users, setUsers] = useState<AdminUserResponse[]>([])
+  const [configs, setConfigs] = useState<AdminDeviceConfigResponse[]>([])
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [activeUserActionId, setActiveUserActionId] = useState<number | null>(null)
+  const [activeConfigActionId, setActiveConfigActionId] = useState<number | null>(null)
 
   const selectServer = useCallback((serverId: number | null, source: ServerResponse[]) => {
     setSelectedServerId(serverId)
@@ -82,6 +90,11 @@ export function ServersPage() {
     setUsers(usersList)
   }, [])
 
+  const loadConfigs = useCallback(async (currentToken: string) => {
+    const configsList = await configsApi.list(currentToken)
+    setConfigs(configsList)
+  }, [])
+
   useEffect(() => {
     if (!token) return
     const currentToken = token
@@ -91,7 +104,7 @@ export function ServersPage() {
       setError(null)
 
       try {
-        await Promise.all([loadServers(currentToken), loadUsers(currentToken)])
+        await Promise.all([loadServers(currentToken), loadUsers(currentToken), loadConfigs(currentToken)])
       } catch (err) {
         setError(err instanceof ApiError ? err.message : 'Не удалось загрузить данные администратора.')
       } finally {
@@ -100,7 +113,7 @@ export function ServersPage() {
     }
 
     void bootstrap()
-  }, [loadServers, loadUsers, token])
+  }, [loadConfigs, loadServers, loadUsers, token])
 
   function updateField<Key extends keyof UpsertServerRequest>(
     field: Key,
@@ -190,6 +203,22 @@ export function ServersPage() {
       setError(err instanceof ApiError ? err.message : 'Не удалось заблокировать пользователя.')
     } finally {
       setActiveUserActionId(null)
+    }
+  }
+
+  async function handleDeleteConfig(configId: number) {
+    if (!token) return
+
+    setActiveConfigActionId(configId)
+    setError(null)
+
+    try {
+      await configsApi.remove(token, configId)
+      setConfigs((current) => current.filter((config) => config.id !== configId))
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Не удалось удалить конфигурацию.')
+    } finally {
+      setActiveConfigActionId(null)
     }
   }
 
@@ -420,6 +449,60 @@ export function ServersPage() {
                     </article>
                   )
                 })}
+              </div>
+            )}
+          </section>
+
+          <section className="panel-card">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h2 className="panel-title mb-1">Все конфигурации</h2>
+                <p className="panel-subtitle mb-0">
+                  Администратор видит все сохранённые конфиги и может удалить любой из них вручную.
+                </p>
+              </div>
+              <span className="badge text-bg-light">{configs.length}</span>
+            </div>
+
+            {configs.length === 0 ? (
+              <EmptyState
+                title="Конфигурации отсутствуют"
+                description="После генерации пользовательских конфигов они появятся в этом списке."
+              />
+            ) : (
+              <div className="vstack gap-3">
+                {configs.map((config) => (
+                  <article key={config.id} className="config-card">
+                    <div className="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
+                      <div>
+                        <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
+                          <h3 className="h5 mb-0">{config.deviceName}</h3>
+                          <span className="badge text-bg-dark">config #{config.id}</span>
+                          <span className="badge text-bg-secondary">{config.serverName}</span>
+                        </div>
+                        <div className="small text-secondary">
+                          Пользователь: {config.userNickname} ({config.userPhone})
+                        </div>
+                        <div className="small text-secondary">
+                          device #{config.deviceId} • user #{config.userId} • {config.serverLocation}
+                        </div>
+                      </div>
+
+                      <div className="d-flex flex-wrap gap-2 align-self-start">
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm"
+                          disabled={activeConfigActionId === config.id}
+                          onClick={() => void handleDeleteConfig(config.id)}
+                        >
+                          {activeConfigActionId === config.id ? 'Удаляем...' : 'Удалить конфиг'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <pre className="config-output admin-config-output mb-0">{config.config}</pre>
+                  </article>
+                ))}
               </div>
             )}
           </section>
