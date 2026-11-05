@@ -2,6 +2,8 @@ import {useMemo} from 'react'
 import type {PropsWithChildren} from 'react'
 import {Link, NavLink, useNavigate} from 'react-router-dom'
 import {useAuth} from '../providers/auth-context'
+import {ServerStatuses} from '../../shared/ui/ServerStatuses'
+import {formatPhone} from '../../shared/lib/phone'
 
 type AppShellProps = PropsWithChildren<{
     title?: string
@@ -62,7 +64,7 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                             <div>
                                 <div className="fw-semibold">{user?.nickname}</div>
                                 <div className="small text-secondary">
-                                    {user?.phone}
+                                    {formatPhone(user?.phone ?? '')}
                                 </div>
                                 {user?.isAdmin ?
                                     (
@@ -93,7 +95,7 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                     <section className="hero-panel mb-4 mb-lg-5">
                         <div className="row g-4 align-items-end">
                             <div className="col-lg-8">
-                                {title ? <p className="eyebrow mb-2">dashboard</p> : null}
+                                {title ? <p className="eyebrow mb-2">Управление VPN</p> : null}
                                 {title ? <h1 className="display-title mb-3">{title}</h1> : null}
                                 {subtitle ? (
                                     <p className="hero-copy mb-0">{subtitle}</p>
@@ -112,6 +114,7 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                     </section>
                 )}
 
+                <ServerStatuses />
                 {children}
             </main>
         </div>

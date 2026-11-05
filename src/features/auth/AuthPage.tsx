@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/auth-context'
 import { ApiError } from '../../shared/api/http'
+import { formatPhone, normalizePhone } from '../../shared/lib/phone'
 
 type AuthMode = 'login' | 'register'
 
@@ -54,14 +55,14 @@ export function AuthPage() {
     try {
       if (mode === 'login') {
         await login({
-          phone: form.phone.trim(),
+          phone: normalizePhone(form.phone),
           password: form.password,
         })
         navigate('/devices', { replace: true })
       } else {
         await register({
           nickname: form.nickname.trim(),
-          phone: form.phone.trim(),
+          phone: normalizePhone(form.phone),
           password: form.password,
         })
 
@@ -87,7 +88,7 @@ export function AuthPage() {
             <div className="auth-panel shadow-lg">
               <div className="column g-0">
                 <div className="auth-aside">
-                  <div className="eyebrow mb-3">vpn control panel</div>
+                  <div className="eyebrow mb-3">Управление VPN</div>
                   <h1 className="display-title mb-3">InoagentVPN</h1>
                 </div>
 
@@ -127,7 +128,7 @@ export function AuthPage() {
                           id="nickname"
                           type="text"
                           className="form-control form-control-lg"
-                          placeholder="Екатерина Мизулина"
+                          placeholder="Ваше имя"
                           value={form.nickname}
                           onChange={(event) =>
                             setForm((current) => ({ ...current, nickname: event.target.value }))
@@ -147,7 +148,7 @@ export function AuthPage() {
                         placeholder="+7 999 123-45-67"
                         value={form.phone}
                         onChange={(event) =>
-                          setForm((current) => ({ ...current, phone: event.target.value }))
+                          setForm((current) => ({ ...current, phone: formatPhone(event.target.value) }))
                         }
                       />
                     </div>
@@ -160,7 +161,7 @@ export function AuthPage() {
                         id="password"
                         type="password"
                         className="form-control form-control-lg"
-                        placeholder="qwerty123"
+                        placeholder="Введите пароль"
                         value={form.password}
                         onChange={(event) =>
                           setForm((current) => ({ ...current, password: event.target.value }))
@@ -177,7 +178,7 @@ export function AuthPage() {
                           id="confirmPassword"
                           type="password"
                           className="form-control form-control-lg"
-                          placeholder="qwerty123"
+                          placeholder="Повторите пароль"
                           value={form.confirmPassword}
                           onChange={(event) =>
                             setForm((current) => ({
@@ -200,6 +201,7 @@ export function AuthPage() {
                           : 'Создать аккаунт'}
                     </button>
                   </form>
+                  <p className="mt-4 text-secondary">Забыли пароль? <a href="https://t.me/inoagentvpnbot?start=reset" target="_blank" rel="noreferrer">Восстановить через Telegram</a>. Подтвердите свой номер кнопкой «Поделиться номером»</p>
                 </div>
               </div>
             </div>

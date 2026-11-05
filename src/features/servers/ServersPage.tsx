@@ -158,6 +158,7 @@ export function ServersPage() {
 
   async function handleDelete() {
     if (!token || !selectedServerId) return
+    if (!window.confirm('Вывести сервер из пула? Существующие конфигурации сохранятся. Новые конфиги на этом сервере больше не будут создаваться.')) return
 
     setIsSaving(true)
     setError(null)
@@ -287,7 +288,7 @@ export function ServersPage() {
                   {selectedServerId ? `Редактирование server #${selectedServerId}` : 'Новый сервер'}
                 </h2>
                 <p className="panel-subtitle mb-0">
-                  Все поля соответствуют `UpsertServerRequest` из контракта
+                  Параметры SSH и контейнера AmneziaWG
                 </p>
               </div>
 

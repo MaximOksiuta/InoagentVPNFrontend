@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthPage } from '../../features/auth/AuthPage'
+import { ResetPasswordPage } from '../../features/auth/ResetPasswordPage'
 import { DevicesPage } from '../../features/devices/DevicesPage'
 import { ServersPage } from '../../features/servers/ServersPage'
 import { LoaderBlock } from '../../shared/ui/LoaderBlock'
@@ -68,6 +69,7 @@ export function AppRouter() {
       <Routes>
         <Route path="/" element={<ProtectedRoute />} />
         <Route path="/auth" element={<PublicOnlyRoute />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/devices" element={<DevicesRoute />} />
         <Route path="/servers" element={<ServersRoute />} />
         <Route path="*" element={<Navigate to="/" replace />} />
