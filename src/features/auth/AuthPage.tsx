@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/auth-context'
 import { ApiError } from '../../shared/api/http'
 import { formatPhone, normalizePhone } from '../../shared/lib/phone'
+import {Brand, RouteIllustration} from '../../shared/ui/Brand'
 
 type AuthMode = 'login' | 'register'
 
@@ -88,8 +89,10 @@ export function AuthPage() {
             <div className="auth-panel shadow-lg">
               <div className="column g-0">
                 <div className="auth-aside">
-                  <div className="eyebrow mb-3">Управление VPN</div>
-                  <h1 className="display-title mb-3">InoagentVPN</h1>
+                  <div className="brand"><Brand/></div>
+                  <h1 className="auth-headline">Ваш интернет.<br/>Ваш маршрут.</h1>
+                  <RouteIllustration/>
+                  <p className="auth-caption">Один аккаунт для всех устройств.<br/>Выбирайте сервер и забирайте конфигурацию.</p>
                 </div>
 
                 <div className="col-lg-7 p-4 p-lg-5">

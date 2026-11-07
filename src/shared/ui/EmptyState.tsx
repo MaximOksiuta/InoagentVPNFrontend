@@ -1,3 +1,5 @@
+import {BrandMark} from './Brand'
+
 type EmptyStateProps = {
   title: string
   description: string
@@ -6,7 +8,7 @@ type EmptyStateProps = {
 export function EmptyState({ title, description }: EmptyStateProps) {
   return (
     <div className="empty-state">
-      <div className="empty-state-badge">empty</div>
+      <BrandMark className="empty-route-mark"/>
       <h3 className="h4 mb-2">{title}</h3>
       <p className="text-secondary mb-0">{description}</p>
     </div>

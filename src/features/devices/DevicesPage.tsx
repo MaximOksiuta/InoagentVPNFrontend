@@ -13,6 +13,7 @@ import type {
 } from '../../shared/api/types'
 import {EmptyState} from '../../shared/ui/EmptyState'
 import {LoaderBlock} from '../../shared/ui/LoaderBlock'
+import {workflowApi,queueChanged} from '../../shared/api/workflowApi'
 
 export function DevicesPage() {
     const {token} = useAuth()
@@ -94,6 +95,14 @@ export function DevicesPage() {
 
         void loadInitial(token)
     }, [loadInitial, token])
+
+    const activeDeviceId=selectedDevice?.id
+    useEffect(()=>{
+        if(!token || !activeDeviceId) return
+        const refresh=()=>{void devicesApi.get(token,activeDeviceId).then(setSelectedDevice).catch(()=>{})}
+        window.addEventListener('inoagent:configs-changed',refresh)
+        return()=>window.removeEventListener('inoagent:configs-changed',refresh)
+    },[token,activeDeviceId])
 
     async function handleCreateDevice(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -179,21 +188,8 @@ export function DevicesPage() {
         setError(null)
 
         try {
-            const createdConfig = await devicesApi.generateConfig(token, selectedDevice.id, {
-                serverId: selectedServerId,
-            })
-
-            setSelectedDevice((current) =>
-                current
-                    ? {
-                        ...current,
-                        configs: [
-                            ...current.configs.filter((config) => config.id !== createdConfig.id),
-                            createdConfig,
-                        ],
-                    }
-                    : current,
-            )
+            await workflowApi.enqueue(token,{serverId:selectedServerId,deviceIds:[selectedDevice.id],requestKey:crypto.randomUUID()})
+            queueChanged()
         } catch (err) {
             setError(err instanceof ApiError ? err.message : 'Не удалось сгенерировать конфиг.')
         } finally {

@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthPage } from '../../features/auth/AuthPage'
 import { ResetPasswordPage } from '../../features/auth/ResetPasswordPage'
 import { DevicesPage } from '../../features/devices/DevicesPage'
+import { ConfigurationsPage } from '../../features/configurations/ConfigurationsPage'
 import { ServersPage } from '../../features/servers/ServersPage'
 import { LoaderBlock } from '../../shared/ui/LoaderBlock'
 import { AppShell } from '../layout/AppShell'
@@ -54,6 +55,13 @@ function ServersRoute() {
   )
 }
 
+function ConfigurationsRoute() {
+  const {isAuthenticated,isReady}=useAuth()
+  if(!isReady) return <LoaderBlock label="Загружаем конфигурации" fullHeight/>
+  if(!isAuthenticated) return <Navigate to="/auth" replace/>
+  return <AppShell title="Конфигурации" subtitle="По серверам и устройствам. Выпускайте, скачивайте и передавайте готовые файлы"><ConfigurationsPage/></AppShell>
+}
+
 function PublicOnlyRoute() {
   const { isAuthenticated, isReady } = useAuth()
 
@@ -71,6 +79,7 @@ export function AppRouter() {
         <Route path="/auth" element={<PublicOnlyRoute />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/devices" element={<DevicesRoute />} />
+        <Route path="/configurations" element={<ConfigurationsRoute />} />
         <Route path="/servers" element={<ServersRoute />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

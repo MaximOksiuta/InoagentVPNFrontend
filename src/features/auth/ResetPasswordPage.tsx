@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { apiRequest } from '../../shared/api/http'
+import {Brand} from '../../shared/ui/Brand'
 
 export function ResetPasswordPage() {
   const [token] = useState(() => location.hash.slice(1))
@@ -18,7 +19,7 @@ export function ResetPasswordPage() {
     catch (e) { setError(e instanceof Error ? e.message : 'Не удалось изменить пароль') }
     finally { setBusy(false) }
   }
-  return <main className="auth-page"><section className="auth-panel recovery-panel"><span className="brand">InoagentVPN</span><h1>Новый пароль</h1>
+  return <main className="auth-page"><section className="auth-panel recovery-panel"><span className="brand"><Brand/></span><h1>Новый пароль</h1>
     {done ? <><p role="status">Пароль изменён. Войдите с новым паролем</p><Link className="btn btn-primary" to="/auth">Войти</Link></> : <form className="vstack gap-3" onSubmit={submit}>
       <p>Ссылка из Telegram действует 10 минут и работает один раз</p>
       <label>Новый пароль<input className="form-control" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={e => setPassword(e.target.value)}/></label>

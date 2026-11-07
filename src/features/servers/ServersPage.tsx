@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import {Link} from 'react-router-dom'
 import type { FormEvent } from 'react'
 import { useAuth } from '../../app/providers/auth-context'
 import { configsApi } from '../../shared/api/configsApi'
@@ -458,6 +459,7 @@ export function ServersPage() {
             <div className="d-flex justify-content-between align-items-center mb-4">
               <div>
                 <h2 className="panel-title mb-1">Все конфигурации</h2>
+                <Link to="/configurations" className="btn btn-primary mt-2">Открыть каталог, фильтры и скачивание</Link>
                 <p className="panel-subtitle mb-0">
                   Администратор видит все сохранённые конфиги и может удалить любой из них вручную.
                 </p>
@@ -501,7 +503,7 @@ export function ServersPage() {
                       </div>
                     </div>
 
-                    <pre className="config-output admin-config-output mb-0">{config.config}</pre>
+                    <details><summary>Показать текст конфигурации</summary><pre className="config-output admin-config-output mb-0">{config.config}</pre></details>
                   </article>
                 ))}
               </div>

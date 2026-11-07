@@ -4,6 +4,9 @@ import {Link, NavLink, useNavigate} from 'react-router-dom'
 import {useAuth} from '../providers/auth-context'
 import {ServerStatuses} from '../../shared/ui/ServerStatuses'
 import {formatPhone} from '../../shared/lib/phone'
+import {GenerationJobs} from '../../shared/ui/GenerationJobs'
+import {ServerNotifications} from '../../shared/ui/ServerNotifications'
+import {Brand, RouteIllustration} from '../../shared/ui/Brand'
 
 type AppShellProps = PropsWithChildren<{
     title?: string
@@ -30,13 +33,13 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                     className="container py-3 d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
                     <div>
                         <Link to="/" className="brand text-decoration-none">
-                            InoagentVPN
+                            <Brand/>
                         </Link>
                     </div>
 
                     <div className="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
 
-                        {user?.isAdmin ? (
+                        {user ? (
                             <nav className="d-flex flex-wrap gap-2">
                                 <NavLink
                                     to="/devices"
@@ -44,17 +47,18 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
                                         `nav-pill ${isActive ? 'nav-pill-active' : ''}`
                                     }
                                 >
-                                    Девайсы
+                                    Устройства
                                 </NavLink>
 
-                                <NavLink
+                                <NavLink to="/configurations" className={({isActive})=>`nav-pill ${isActive?'nav-pill-active':''}`}>Конфигурации</NavLink>
+                                {user.isAdmin && <NavLink
                                     to="/servers"
                                     className={({isActive}) =>
                                         `nav-pill ${isActive ? 'nav-pill-active' : ''}`
                                     }
                                 >
                                     Серверы
-                                </NavLink>
+                                </NavLink>}
                             </nav>
                         ) : null}
                         <div className="d-flex align-items-center gap-3">
@@ -93,28 +97,21 @@ export function AppShell({children, title, subtitle}: AppShellProps) {
             <main className="container py-4 py-lg-5">
                 {(title || subtitle) && (
                     <section className="hero-panel mb-4 mb-lg-5">
-                        <div className="row g-4 align-items-end">
-                            <div className="col-lg-8">
-                                {title ? <p className="eyebrow mb-2">Управление VPN</p> : null}
+                        <div className="page-heading">
+                            <div className="page-heading-copy">
                                 {title ? <h1 className="display-title mb-3">{title}</h1> : null}
                                 {subtitle ? (
                                     <p className="hero-copy mb-0">{subtitle}</p>
                                 ) : null}
                             </div>
-                            <div className="col-lg-4">
-                                <div className="hero-metric">
-                                    <span className="hero-metric-label">Пользователь</span>
-                                    <strong>{user?.nickname}</strong>
-                                    <div className="small text-secondary mt-2">
-                                        {user?.isAdmin ? 'admin' : 'user'}
-                                    </div>
-                                </div>
-                            </div>
+                            <RouteIllustration compact/>
                         </div>
                     </section>
                 )}
 
                 <ServerStatuses />
+                <ServerNotifications />
+                <GenerationJobs />
                 {children}
             </main>
         </div>
