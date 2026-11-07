@@ -22,3 +22,21 @@ Initial route animation runs once; hover/focus retraces the route. Reduced
 motion disables movement. Illustration makes no availability claim. Accent
 moved from a generic neon network palette to copper on the user-approved
 graphite background. Data areas remain neutral for readability.
+
+## Server postcards and loading — 2026-11-08
+
+The established graphite/chalk/copper tokens and Plex/Segoe scale stay in use.
+Server names now pair with saved 4:3 vector postcards. City names select a
+recognizable silhouette; a SHA-256 name seed selects palette, sky and terrain.
+Unknown names choose an original landscape, avoiding random country claims.
+The shared route across the bottom ties every postcard to Inoagent.
+
+    [postcard] London          [route loader] Checking connection
+               United Kingdom
+
+Considered generic symmetric identicons, but they are difficult to distinguish
+in a long server list. Small place illustrations have a stronger silhouette.
+Use 56x42 in tables, 44x36 in the rail, and the same identity in the chooser.
+No decorative motion on postcards. Motion belongs to actual waits: moving
+signal through a passage, compact in buttons/statuses, full size for loading
+pages. Queue progress stays real. Reduced motion freezes a readable route.

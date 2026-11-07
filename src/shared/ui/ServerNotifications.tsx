@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../app/providers/auth-context'
 import { workflowApi, queueChanged, type Notification } from '../api/workflowApi'
+import {ServerName} from './ServerName'
+import {BusyLabel} from './LoaderBlock'
 
 export function ServerNotifications() {
   const {token}=useAuth()
@@ -27,6 +29,6 @@ export function ServerNotifications() {
   }
   return <details className="panel-card notifications-panel mb-4" open={unread.length>0 || undefined}><summary>Новые серверы {unread.length>0 && <span className="signal up">Непрочитано: {unread.length}</span>}</summary>
     {error && <p role="alert">{error}</p>}
-    {rows.slice(0,10).map(row=><article className="notification-row" key={row.id}><div><strong>{row.serverName}</strong><p className="text-secondary mb-0">{row.location} · {new Date(row.createdAt).toLocaleDateString('ru-RU')}</p></div><div className="d-flex flex-wrap gap-2"><Link className="btn btn-sm btn-outline-light" to={`/configurations?server=${row.serverId}`} onClick={()=>{void read(row.id)}}>Открыть</Link><button className="btn btn-sm btn-primary" disabled={busy===row.id} onClick={()=>{void generate(row)}}>{busy===row.id?'Добавляем…':'Выпустить для всех моих устройств'}</button>{!row.read && <button className="btn btn-sm btn-outline-secondary" onClick={()=>{void read(row.id)}}>Прочитано</button>}</div></article>)}
+    {rows.slice(0,10).map(row=><article className="notification-row" key={row.id}><div><ServerName id={row.serverId} name={row.serverName} location={row.location}/><p className="text-secondary mb-0 mt-2">{new Date(row.createdAt).toLocaleDateString('ru-RU')}</p></div><div className="d-flex flex-wrap gap-2"><Link className="btn btn-sm btn-outline-light" to={`/configurations?server=${row.serverId}`} onClick={()=>{void read(row.id)}}>Открыть</Link><button className="btn btn-sm btn-primary" disabled={busy===row.id} onClick={()=>{void generate(row)}}><BusyLabel busy={busy===row.id}>{busy===row.id?'Добавляем…':'Выпустить для всех моих устройств'}</BusyLabel></button>{!row.read && <button className="btn btn-sm btn-outline-secondary" onClick={()=>{void read(row.id)}}>Прочитано</button>}</div></article>)}
   </details>
 }

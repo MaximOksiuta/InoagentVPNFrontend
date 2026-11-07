@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../app/providers/auth-context'
 import { workflowApi, queueChanged, type GenerationJob } from '../api/workflowApi'
+import {ServerName} from './ServerName'
+import {RouteLoader} from './LoaderBlock'
 
 const labels:Record<string,string>={queued:'В очереди',running:'Выпускаем',done:'Готово',skipped:'Уже есть или в очереди',failed:'Ошибка',partial:'Есть ошибки',completed:'Завершено'}
 export function GenerationJobs() {
@@ -33,7 +35,7 @@ export function GenerationJobs() {
     {jobs.slice(0,10).map(job=>{
       const complete=job.items.filter(i=>!['queued','running'].includes(i.state)).length
       return <section className="queue-job" key={job.id}>
-        <div className="d-flex justify-content-between gap-3"><strong>{job.serverName}</strong><span>{labels[job.state]} · {complete}/{job.items.length}</span></div>
+        <div className="d-flex justify-content-between align-items-center gap-3"><ServerName id={job.serverId} name={job.serverName}/><span className="busy-label">{['queued','running'].includes(job.state) && <RouteLoader compact/>}{labels[job.state]} · {complete}/{job.items.length}</span></div>
         <progress aria-label={`Прогресс ${job.serverName}`} max={job.items.length} value={complete}/>
         <details><summary className="small text-secondary">Устройства и результаты</summary><ul className="queue-items">{job.items.map(i=><li key={i.deviceId}><span>{i.userName} · {i.deviceName}</span><span className={i.state==='failed'?'text-danger':''}>{labels[i.state]}{i.error ? ` · ${i.error}` : ''}</span></li>)}</ul></details>
         <div className="d-flex gap-3 mt-3"><Link to={`/configurations?server=${job.serverId}`}>Открыть конфигурации</Link>{job.state==='partial' && <button className="btn btn-sm btn-outline-light" onClick={()=>{if(token) void workflowApi.retry(token,job.id).then(queueChanged).catch(()=>setError('Не удалось повторить задание'))}}>Повторить ошибки</button>}</div>

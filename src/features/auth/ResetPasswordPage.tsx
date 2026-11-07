@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { apiRequest } from '../../shared/api/http'
 import {Brand} from '../../shared/ui/Brand'
+import {BusyLabel} from '../../shared/ui/LoaderBlock'
 
 export function ResetPasswordPage() {
   const [token] = useState(() => location.hash.slice(1))
@@ -24,6 +25,6 @@ export function ResetPasswordPage() {
       <p>Ссылка из Telegram действует 10 минут и работает один раз</p>
       <label>Новый пароль<input className="form-control" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={e => setPassword(e.target.value)}/></label>
       <label>Повторите пароль<input className="form-control" type="password" autoComplete="new-password" minLength={8} required value={confirm} onChange={e => setConfirm(e.target.value)}/></label>
-      {error && <p className="alert alert-danger" role="alert">{error}</p>}<button className="btn btn-primary" disabled={busy || !token}>{busy ? 'Сохраняем…' : 'Сохранить пароль'}</button></form>}
+      {error && <p className="alert alert-danger" role="alert">{error}</p>}<button className="btn btn-primary" disabled={busy || !token}><BusyLabel busy={busy}>{busy ? 'Сохраняем…' : 'Сохранить пароль'}</BusyLabel></button></form>}
     </section></main>
 }

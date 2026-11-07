@@ -5,6 +5,7 @@ import { useAuth } from '../../app/providers/auth-context'
 import { ApiError } from '../../shared/api/http'
 import { formatPhone, normalizePhone } from '../../shared/lib/phone'
 import {Brand, RouteIllustration} from '../../shared/ui/Brand'
+import {BusyLabel} from '../../shared/ui/LoaderBlock'
 
 type AuthMode = 'login' | 'register'
 
@@ -197,11 +198,11 @@ export function AuthPage() {
                     {error ? <div className="alert alert-danger mb-0">{error}</div> : null}
 
                     <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
-                      {isSubmitting
+                      <BusyLabel busy={isSubmitting}>{isSubmitting
                         ? 'Отправляем...'
                         : mode === 'login'
                           ? 'Войти'
-                          : 'Создать аккаунт'}
+                          : 'Создать аккаунт'}</BusyLabel>
                     </button>
                   </form>
                   <p className="mt-4 text-secondary">Забыли пароль? <a href="https://t.me/inoagentvpnbot?start=reset" target="_blank" rel="noreferrer">Восстановить через Telegram</a>. Подтвердите свой номер кнопкой «Поделиться номером»</p>

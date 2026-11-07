@@ -12,7 +12,9 @@ import type {
     ServerListItemResponse,
 } from '../../shared/api/types'
 import {EmptyState} from '../../shared/ui/EmptyState'
-import {LoaderBlock} from '../../shared/ui/LoaderBlock'
+import {LoaderBlock,BusyLabel} from '../../shared/ui/LoaderBlock'
+import {ServerName} from '../../shared/ui/ServerName'
+import {ServerPicker} from '../../shared/ui/ServerPicker'
 import {workflowApi,queueChanged} from '../../shared/api/workflowApi'
 
 export function DevicesPage() {
@@ -280,7 +282,7 @@ export function DevicesPage() {
                             onChange={(event) => setNewDeviceName(event.target.value)}
                         />
                         <button type="submit" className="btn btn-primary" disabled={isSaving}>
-                            Добавить устройство
+                            <BusyLabel busy={isSaving}>Добавить устройство</BusyLabel>
                         </button>
                     </form>
 
@@ -328,7 +330,7 @@ export function DevicesPage() {
                                     </div>
                                     <div className="col-md-4 d-grid">
                                         <button type="submit" className="btn btn-dark" disabled={isSaving}>
-                                            Сохранить
+                                            <BusyLabel busy={isSaving}>Сохранить</BusyLabel>
                                         </button>
                                     </div>
                                 </form>
@@ -347,21 +349,7 @@ export function DevicesPage() {
                                 <form onSubmit={handleGenerateConfig} className="row g-3 align-items-end">
                                     <div className="col-md-8">
                                         <label className="form-label">Сервер</label>
-                                        <select
-                                            className="form-select"
-                                            value={selectedServerId}
-                                            onChange={(event) => setSelectedServerId(Number(event.target.value))}
-                                            disabled={servers.length === 0}
-                                        >
-                                            {servers.length === 0 ? (
-                                                <option value="">Нет доступных серверов</option>
-                                            ) : null}
-                                            {servers.map((server) => (
-                                                <option key={server.id} value={server.id}>
-                                                    {server.name} · {server.location}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        <ServerPicker servers={servers} value={selectedServerId || 0} onChange={setSelectedServerId}/>
                                     </div>
                                     <div className="col-md-4 d-grid">
                                         <button
@@ -369,7 +357,7 @@ export function DevicesPage() {
                                             className="btn btn-primary"
                                             disabled={isGenerating || servers.length === 0}
                                         >
-                                            {isGenerating ? 'Генерируем...' : 'Сгенерировать'}
+                                            <BusyLabel busy={isGenerating}>{isGenerating ? 'Добавляем…' : 'Сгенерировать'}</BusyLabel>
                                         </button>
                                     </div>
                                 </form>
@@ -395,10 +383,7 @@ export function DevicesPage() {
                                                 <div
                                                     className="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3">
                                                     <div>
-                                                        <h3 className="h5 mb-1">{config.serverName}</h3>
-                                                        <div className="text-secondary">
-                                                            {config.serverLocation} · server #{config.serverId}
-                                                        </div>
+                                                        <h3 className="h5 mb-1"><ServerName id={config.serverId} name={config.serverName} location={config.serverLocation}/></h3>
                                                     </div>
                                                     <span className="badge rounded-pill text-bg-dark align-self-start">config #{config.id}</span>
                                                 </div>
@@ -410,7 +395,7 @@ export function DevicesPage() {
                                                         onClick={() => void handleOpenQr(config)}
                                                         disabled={isQrLoading}
                                                     >
-                                                        {isQrLoading && qrConfig?.id === config.id ? 'Загружаем QR...' : 'Открыть QR'}
+                                                        <BusyLabel busy={isQrLoading && qrConfig?.id === config.id}>{isQrLoading && qrConfig?.id === config.id ? 'Загружаем QR...' : 'Открыть QR'}</BusyLabel>
                                                     </button>
                                                     <button
                                                         type="button"
@@ -491,7 +476,7 @@ export function DevicesPage() {
                                             disabled={isSaving}
                                             onClick={() => void handleDeleteDevice(selectedDevice.id)}
                                         >
-                                            {isSaving ? 'Удаляем...' : 'Да, удалить'}
+                                            <BusyLabel busy={isSaving}>{isSaving ? 'Удаляем...' : 'Да, удалить'}</BusyLabel>
                                         </button>
                                     </div>
                                 </div>
@@ -515,7 +500,7 @@ export function DevicesPage() {
                                         <div>
                                             <p className="eyebrow mb-2">QR code</p>
                                             <h2 id="config-qr-modal-title" className="panel-title mb-1">
-                                                {qrConfig.serverName}
+                                                <ServerName id={qrConfig.serverId} name={qrConfig.serverName}/>
                                             </h2>
                                             <p className="panel-subtitle mb-0">
                                                 {qrConfig.serverLocation} · config #{qrConfig.id}

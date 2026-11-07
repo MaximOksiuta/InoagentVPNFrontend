@@ -13,7 +13,8 @@ import type {
   UpsertServerRequest,
 } from '../../shared/api/types'
 import { EmptyState } from '../../shared/ui/EmptyState'
-import { LoaderBlock } from '../../shared/ui/LoaderBlock'
+import { LoaderBlock,BusyLabel } from '../../shared/ui/LoaderBlock'
+import {ServerName} from '../../shared/ui/ServerName'
 
 const emptyServerForm: UpsertServerRequest = {
   name: '',
@@ -268,10 +269,7 @@ export function ServersPage() {
                   }`}
                   onClick={() => selectServer(server.id, servers)}
                 >
-                  <span>
-                    <strong>{server.name}</strong>
-                    <small>{server.location}</small>
-                  </span>
+                  <ServerName id={server.id} name={server.name} location={server.location}/>
                   <span className="device-chevron">Edit</span>
                 </button>
               ))}
@@ -389,7 +387,7 @@ export function ServersPage() {
               </div>
               <div className="col-12 d-grid d-md-flex justify-content-md-end">
                 <button type="submit" className="btn btn-primary px-4" disabled={isSaving}>
-                  {isSaving ? 'Сохраняем...' : selectedServerId ? 'Сохранить изменения' : 'Создать сервер'}
+                  <BusyLabel busy={isSaving}>{isSaving ? 'Сохраняем...' : selectedServerId ? 'Сохранить изменения' : 'Создать сервер'}</BusyLabel>
                 </button>
               </div>
             </form>
@@ -436,7 +434,7 @@ export function ServersPage() {
                             disabled={activeUserActionId === user.id || user.isApproved}
                             onClick={() => void handleApproveUser(user.id)}
                           >
-                            {activeUserActionId === user.id ? 'Сохраняем...' : 'Подтвердить'}
+                            <BusyLabel busy={activeUserActionId === user.id}>{activeUserActionId === user.id ? 'Сохраняем...' : 'Подтвердить'}</BusyLabel>
                           </button>
                           <button
                             type="button"
@@ -444,7 +442,7 @@ export function ServersPage() {
                             disabled={activeUserActionId === user.id || user.isBanned}
                             onClick={() => void handleBanUser(user.id)}
                           >
-                            {activeUserActionId === user.id ? 'Сохраняем...' : 'Заблокировать'}
+                            <BusyLabel busy={activeUserActionId === user.id}>{activeUserActionId === user.id ? 'Сохраняем...' : 'Заблокировать'}</BusyLabel>
                           </button>
                         </div>
                       </div>
@@ -481,7 +479,7 @@ export function ServersPage() {
                         <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
                           <h3 className="h5 mb-0">{config.deviceName}</h3>
                           <span className="badge text-bg-dark">config #{config.id}</span>
-                          <span className="badge text-bg-secondary">{config.serverName}</span>
+                          <ServerName id={config.serverId} name={config.serverName}/>
                         </div>
                         <div className="small text-secondary">
                           Пользователь: {config.userNickname} ({config.userPhone})
@@ -498,7 +496,7 @@ export function ServersPage() {
                           disabled={activeConfigActionId === config.id}
                           onClick={() => void handleDeleteConfig(config.id)}
                         >
-                          {activeConfigActionId === config.id ? 'Удаляем...' : 'Удалить конфиг'}
+                          <BusyLabel busy={activeConfigActionId === config.id}>{activeConfigActionId === config.id ? 'Удаляем...' : 'Удалить конфиг'}</BusyLabel>
                         </button>
                       </div>
                     </div>
