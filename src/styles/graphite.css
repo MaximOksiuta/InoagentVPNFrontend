@@ -81,6 +81,7 @@ a:focus-visible,button:focus-visible{outline-color:var(--route-copper)}
 .catalog-server>.server-identity+.server-identity{margin-left:auto}
 .catalog-table td .server-identity{min-width:140px}
 .status-row .server-identity{max-width:100%}
+.host-signals{display:grid;gap:6px}
 .server-picker{position:relative;min-width:0}
 .server-picker>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;padding:10px 12px;border:1px solid #454044;border-radius:10px;background:#232325;min-height:64px}
 .server-picker>summary::-webkit-details-marker{display:none}
