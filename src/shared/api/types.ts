@@ -91,6 +91,7 @@ export type ServerListItemResponse = {
 }
 
 export type UpsertServerRequest = {
+  notificationComment?: string | null
   containerConfigDir: string
   containerName: string
   host: string

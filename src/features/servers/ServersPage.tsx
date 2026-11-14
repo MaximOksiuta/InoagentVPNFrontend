@@ -17,6 +17,7 @@ import { LoaderBlock,BusyLabel } from '../../shared/ui/LoaderBlock'
 import {ServerName} from '../../shared/ui/ServerName'
 
 const emptyServerForm: UpsertServerRequest = {
+  notificationComment: '',
   name: '',
   location: '',
   host: '',
@@ -52,6 +53,7 @@ export function ServersPage() {
     }
 
     setForm({
+      notificationComment: server.notificationComment ?? '',
       name: server.name,
       location: server.location,
       host: server.host,
@@ -384,6 +386,19 @@ export function ServersPage() {
                   value={form.containerConfigDir}
                   onChange={(event) => updateField('containerConfigDir', event.target.value)}
                 />
+              </div>
+              <div className="col-12">
+                <label htmlFor="server-notification-comment" className="form-label">Комментарий к уведомлению</label>
+                <textarea
+                  id="server-notification-comment"
+                  className="form-control"
+                  rows={3}
+                  maxLength={1000}
+                  value={form.notificationComment ?? ''}
+                  onChange={(event) => updateField('notificationComment', event.target.value)}
+                  placeholder="Например, перед подключением обновите VPN-клиент"
+                />
+                <p className="form-text mb-0">Этот текст увидят пользователи на сайте и в Telegram.</p>
               </div>
               <div className="col-12 d-grid d-md-flex justify-content-md-end">
                 <button type="submit" className="btn btn-primary px-4" disabled={isSaving}>

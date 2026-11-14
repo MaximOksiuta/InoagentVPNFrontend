@@ -5,7 +5,7 @@ export type CatalogServer = {id:number;name:string;location:string;archived:bool
 export type CatalogPage = {entries:CatalogEntry[];total:number;servers:CatalogServer[]}
 export type JobItem = {deviceId:number;deviceName:string;userId:number;userName:string;state:string;configId:number|null;error:string|null}
 export type GenerationJob = {id:string;serverId:number;serverName:string;createdAt:number;state:string;items:JobItem[]}
-export type Notification = {id:number;serverId:number;serverName:string;location:string;createdAt:number;read:boolean}
+export type Notification = {id:number;serverId:number;serverName:string;location:string;createdAt:number;read:boolean;comment?:string|null}
 export type BatchRequest = {serverId:number;deviceIds?:number[];allUsers?:boolean;userId?:number;requestKey:string}
 
 export const workflowApi = {
